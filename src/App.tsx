@@ -12,37 +12,44 @@ function App() {
     ["elem1", "elem2", "elem3", "elem4", "elem5"]
   const [children, setChildren] = useState(elementArray);
   const [isDraggable, setIsDraggable] = useState(false);
-  const [dragItemIndex, setDragItemIndex] = useState(0);
-  const [dragOverItemIndex, setDragOverItemIndex] = useState(0);
+  const [dragItemIndex, setDragItemIndex] = useState<number | undefined>(undefined);
+  const [dragOverItemIndex, setDragOverItemIndex] = useState<number | undefined>(undefined);
 
   function handleHandlerMouseDown() {
     setIsDraggable(true)
+
   }
   function handleHandlerMouseUp() {
     setIsDraggable(false);
   }
-  function handleDragStart(id: number) {
+  function handleDragStart(id: number, event: React.DragEvent<HTMLDivElement>) {
+
+    const img = new Image();
+    img.src = 'data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=';
+    event.dataTransfer.setDragImage(img, 0, 0);
+    event.dataTransfer.effectAllowed = "move"
     setDragItemIndex(id);
   }
 
   function handleDrop() {
     const _elementArray = [...children]
-    const element = _elementArray.splice(dragItemIndex, 1)[0];
-    _elementArray.splice(dragOverItemIndex, 0, element);
+    const element = _elementArray.splice(dragItemIndex!, 1)[0];
+    _elementArray.splice(dragOverItemIndex!, 0, element);
     setChildren(_elementArray);
-
-
   }
 
-  // function handleDragEnd(event: React.DragEvent<HTMLDivElement>) {
-
-  // }
+  function handleDragEnd() {
+    setDragItemIndex(undefined);
+    setDragOverItemIndex(undefined);
+  }
 
   function handleDragOver(event: React.DragEvent<HTMLDivElement>) {
     event.preventDefault();
   }
 
   function handleDragEnter(id: number) {
+
+
     setDragOverItemIndex(id);
   }
 
@@ -61,10 +68,13 @@ function App() {
             handleDrop={handleDrop}
             handleDragEnter={handleDragEnter}
             handleDragOver={handleDragOver}
+            dragItemIndex={dragItemIndex}
+            handleDragEnd={handleDragEnd}
+            dragOverItemIndex={dragOverItemIndex}
             key={id} >
             <DragHandler >
               <a className='drag-indicator'
-                onMouseDown={handleHandlerMouseDown}
+                onMouseDown={() => { handleHandlerMouseDown() }}
                 onMouseUp={handleHandlerMouseUp}
 
               >
