@@ -1,36 +1,32 @@
+import { useContext } from "react"
+import { DragContext } from "../context/DragContext"
 
 interface ChildrenBlockProps {
     title: string
     id: number,
     isDraggable: boolean,
     children: React.ReactNode,
-    handleDragStart: (id: number, event: React.DragEvent<HTMLDivElement>) => void,
-    handleDrop: (id: number) => void,
-    handleDragEnter: (id: number) => void,
-    handleDragOver: (event: React.DragEvent<HTMLDivElement>) => void,
-    handleDragEnd: () => void,
-    dragItemIndex: number | undefined,
-    dragOverItemIndex: number | undefined,
 }
 
 export default function ChildrenBlock({ title
-    , id, isDraggable, children,
-    handleDragStart,
-    handleDrop,
-    handleDragEnter,
-    handleDragOver,
-    handleDragEnd,
-    dragItemIndex,
-    dragOverItemIndex }: ChildrenBlockProps) {
+    , id, isDraggable, children }: ChildrenBlockProps) {
+
+    const { dragItemIndex, dragOverItemIndex
+        , handleDragStart, handleDrop,
+        handleDragEnter, handleDragEnd, handleDragOver } = useContext(DragContext);
+
+    const greater = dragItemIndex! > dragOverItemIndex! && dragOverItemIndex === id;
+    const less = dragItemIndex! < dragOverItemIndex! && dragOverItemIndex === id;
+
     return (
         <div draggable={isDraggable}
             onDragStart={(e) => handleDragStart(id, e)}
-            onDrop={() => handleDrop(id)}
+            onDrop={() => handleDrop()}
             onDragEnter={() => handleDragEnter(id)}
             onDragEnd={handleDragEnd}
             onDragOver={(event) => handleDragOver(event)}
-            className={`childrenBlock ${dragItemIndex! > dragOverItemIndex! && dragOverItemIndex === id
-                && "border-top"} ${dragItemIndex! < dragOverItemIndex! && dragOverItemIndex === id
+            className={`childrenBlock ${greater
+                && "border-top"} ${less
                 && "border-bottom"}`} id={id.toString()}>
             {children}
             <div className="childBlock-text-container">
