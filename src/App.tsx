@@ -30,6 +30,7 @@ function App() {
   debounce_call();
 
 
+
   return (
     <>
       <DragContext.Provider value={{
@@ -45,7 +46,6 @@ function App() {
             <ChildrenBlock title={elementTitle}
               id={id}
               isDraggable={isDraggable}
-
               key={id} >
               <DragHandler >
                 <a className='drag-indicator'

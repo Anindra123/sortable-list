@@ -15,8 +15,9 @@ export default function ChildrenBlock({ title
         , handleDragStart, handleDrop,
         handleDragEnter, handleDragEnd, handleDragOver } = useContext(DragContext);
 
-    const greater = dragItemIndex! > dragOverItemIndex! && dragOverItemIndex === id;
-    const less = dragItemIndex! < dragOverItemIndex! && dragOverItemIndex === id;
+    const greater = dragItemIndex! >= dragOverItemIndex! && dragOverItemIndex === id;
+    const less = dragItemIndex! <= dragOverItemIndex! && dragOverItemIndex === id;
+
 
     return (
         <div draggable={isDraggable}

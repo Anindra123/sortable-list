@@ -1,6 +1,4 @@
 interface DragHandlerProp {
-    // handleHandlerMouseDown: () => void,
-    // handleHandlerMouseUp: () => void,
     children: React.ReactNode
 }
 

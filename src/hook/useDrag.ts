@@ -14,10 +14,10 @@ export default function useDrag({
   >(undefined);
 
   function handleDragStart(id: number, event: React.DragEvent<HTMLDivElement>) {
-    const img = new Image();
-    img.src =
-      "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
-    event.dataTransfer.setDragImage(img, 0, 0);
+    // const img = new Image();
+    // img.src =
+    //   "data:image/gif;base64,R0lGODlhAQABAIAAAAUEBAAAACwAAAAAAQABAAACAkQBADs=";
+    // event.dataTransfer.setDragImage(img, 0, 0);
     event.dataTransfer.effectAllowed = "move";
     setDragItemIndex(id);
   }
