@@ -2,6 +2,8 @@ import { createContext } from "react";
 import { DragContextType } from "../types/DragContextTypes";
 
 export const DragContext = createContext<DragContextType>({
+  isTop: false,
+  isBottom: false,
   dragItemIndex: undefined,
   dragOverItemIndex: undefined,
   handleDragEnd: () => {},
@@ -9,4 +11,5 @@ export const DragContext = createContext<DragContextType>({
   handleDragOver: () => {},
   handleDragStart: () => {},
   handleDrop: () => {},
+  handleDragLeave: () => {},
 });

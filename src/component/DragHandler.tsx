@@ -1,11 +1,21 @@
+import GridSvg from "./svg/GridSvg"
+
 interface DragHandlerProp {
-    children: React.ReactNode
+    handleHandlerMouseDown: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
+    handleHandlerMouseUp: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
 }
 
-export default function DragHandler({ children }: DragHandlerProp) {
+
+export default function DragHandler({ handleHandlerMouseDown, handleHandlerMouseUp }: DragHandlerProp) {
     return (
         <div className="childBlock-indicator-container">
-            {children}
+            <a className='drag-indicator'
+                onMouseDown={handleHandlerMouseDown}
+                onMouseUp={handleHandlerMouseUp}
+            >
+                <GridSvg fillColor='black' width={24} height={24} />
+            </a>
+
         </div>
     )
 }
