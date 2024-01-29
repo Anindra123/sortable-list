@@ -11,27 +11,29 @@ interface ChildrenBlockProps {
 export default function ChildrenBlock({ title
     , id, isDraggable, children }: ChildrenBlockProps) {
 
-    const { dragItemIndex, dragOverItemIndex
-        , handleDragStart, handleDrop,
-        handleDragEnter, handleDragEnd, handleDragOver } = useContext(DragContext);
-
-    const greater = dragItemIndex! > dragOverItemIndex! && dragOverItemIndex === id;
-    const less = dragItemIndex! < dragOverItemIndex! && dragOverItemIndex === id;
+    const {
+        isTop, isBottom, dragOverItemIndex, handleDragStart, handleDrop,
+        handleDragEnter, handleDragEnd, handleDragOver, handleDragLeave } = useContext(DragContext);
 
     return (
-        <div draggable={isDraggable}
-            onDragStart={(e) => handleDragStart(id, e)}
-            onDrop={() => handleDrop()}
-            onDragEnter={() => handleDragEnter(id)}
-            onDragEnd={handleDragEnd}
-            onDragOver={(event) => handleDragOver(event)}
-            className={`childrenBlock ${greater
-                && "border-top"} ${less
-                && "border-bottom"}`} id={id.toString()}>
-            {children}
-            <div className="childBlock-text-container">
-                <p className="childBlock-text">{title}</p>
+        <>
+            <div className={`top-bar ${dragOverItemIndex === id && isTop && "visible"}`}></div>
+            <div draggable={isDraggable}
+                onDragStart={(event) => handleDragStart(id, event)}
+                onDrop={(event) => handleDrop(event)}
+                onDragEnter={(event) => handleDragEnter(id, event)}
+                onDragEnd={handleDragEnd}
+                onDragOver={(event) => handleDragOver(event)}
+                onDragLeave={(event) => handleDragLeave(event)}
+                className={`childrenBlock`} id={id.toString()}>
+                <div className="child-block-content-container">
+                    {children}
+                    <div className="childBlock-text-container">
+                        <p className="childBlock-text">{title}</p>
+                    </div>
+                </div>
             </div>
-        </div>
+            <div className={`bottom-bar ${dragOverItemIndex === id && isBottom && "visible"}`} ></div>
+        </>
     )
 }
