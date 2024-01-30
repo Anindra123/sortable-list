@@ -1,12 +1,11 @@
+import { useContext } from "react"
 import GridSvg from "./svg/GridSvg"
-
-interface DragHandlerProp {
-    handleHandlerMouseDown: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
-    handleHandlerMouseUp: (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void,
-}
+import { DragHandlerContext } from "../context/DragHandlerContext"
 
 
-export default function DragHandler({ handleHandlerMouseDown, handleHandlerMouseUp }: DragHandlerProp) {
+
+export default function DragHandler() {
+    const { handleHandlerMouseUp, handleHandlerMouseDown } = useContext(DragHandlerContext);
     return (
         <div className="childBlock-indicator-container">
             <a className='drag-indicator'
