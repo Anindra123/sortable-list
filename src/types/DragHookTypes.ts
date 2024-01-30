@@ -1,5 +1,7 @@
-export interface DragHookPropType {
+export interface DragHookPropType<T> {
+  childrenArray: T[];
   elementArray: Array<React.JSX.Element>;
+  setChildrenArray: React.Dispatch<React.SetStateAction<T[]>>;
 }
 
 export type DragHookReturnType = [

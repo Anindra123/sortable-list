@@ -2,17 +2,17 @@
 
 interface ChildrenContainerProps {
     dragHandler: React.ReactNode,
-    childBlock: React.ReactNode,
+    childContent: React.ReactNode,
 }
 
-export default function ChildrenWrapper({ dragHandler, childBlock }: ChildrenContainerProps) {
+export default function ChildrenBlock({ dragHandler, childContent }: ChildrenContainerProps) {
 
     return (
         <>
 
             <div className="child-block-content-container">
                 {dragHandler}
-                {childBlock}
+                {childContent}
             </div>
         </>
     )

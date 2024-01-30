@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { DragHookPropType, DragHookReturnType } from "../types/DragHookTypes";
 
-export default function useDrag({
+export default function useDrag<T>({
+  childrenArray,
   elementArray,
-}: DragHookPropType): DragHookReturnType {
-  const [children, setChildren] = useState(elementArray);
+  setChildrenArray,
+}: DragHookPropType<T>): DragHookReturnType {
+  // const [children, setChildren] = useState(childrenArray);
+  const [elements, setElementArray] = useState(elementArray);
 
   const [dragItemIndex, setDragItemIndex] = useState<number | undefined>(
     undefined
@@ -28,10 +31,15 @@ export default function useDrag({
       bottom_bar.classList.remove("visible");
     }
 
-    const _elementArray = [...children];
+    const _childArray = [...childrenArray];
+    const child = _childArray.splice(dragItemIndex!, 1)[0];
+    _childArray.splice(dragOverItemIndex!, 0, child);
+    const _elementArray = [...elements];
     const element = _elementArray.splice(dragItemIndex!, 1)[0];
     _elementArray.splice(dragOverItemIndex!, 0, element);
-    setChildren(_elementArray);
+
+    setElementArray(_elementArray);
+    setChildrenArray(_childArray);
   }
 
   function handleDragEnd() {
@@ -39,13 +47,12 @@ export default function useDrag({
     setDragOverItemIndex(undefined);
   }
 
-  function handleDragEnter(id: number, event: React.DragEvent<HTMLDivElement>) {
-    console.log(event.currentTarget);
+  function handleDragEnter(id: number) {
     setDragOverItemIndex(id);
   }
 
   return [
-    children,
+    elements,
     dragOverItemIndex,
     handleDragStart,
     handleDrop,

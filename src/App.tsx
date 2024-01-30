@@ -1,24 +1,31 @@
 
+import { useState } from 'react'
 import './App.css'
-import ChildBlock from './component/ChildBlock'
+import ChildContent from './component/ChildContent'
+import ChildrenBlock from './component/ChildrenBlock'
+import DragHandler from './component/DragHandler'
 import MakeSortable from './component/MakeSortable'
 
 
 function App() {
-  const childElments = [
-    <ChildBlock title='elem1' />,
-    <ChildBlock title='elem2' />,
-    <ChildBlock title='elem3' />,
-    <ChildBlock title='elem4' />,
-    <ChildBlock title='elem5' />,
-    <ChildBlock title='elem6' />,
-  ]
+  const [childrens, setChildrens] = useState([1, 2, 3, 4, 5,])
+
+
+  const childElements = childrens.map((title) => {
+    return <ChildrenBlock
+      childContent={<ChildContent
+        title={typeof title === "number" ? title.toString() : title} />}
+      dragHandler={<DragHandler />}
+    />
+  })
+
+
 
 
   return (
     <>
 
-      <MakeSortable childElements={childElments} />
+      <MakeSortable childrens={childrens} childElements={childElements} setChildren={setChildrens} />
 
 
     </>

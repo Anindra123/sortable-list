@@ -1,22 +1,25 @@
+import { DragHandlerContext } from '../context/DragHandlerContext'
 import debounce from '../helper/Debounce'
 import useDrag from '../hook/useDrag'
-
-import DragHandler from '../component/DragHandler'
-
-import ChildrenWrapper from './ChildrenWrapper'
 import useDraggable from '../hook/useDraggable'
 import useDragIndicator from '../hook/useDragIndicator'
 
 
-interface MakeSortableProps {
-    childElements: Array<React.JSX.Element>
+interface MakeSortableProps<T> {
+    childElements: Array<React.JSX.Element>,
+    childrens: Array<T>,
+    setChildren: React.Dispatch<React.SetStateAction<T[]>>,
 }
 
-export default function MakeSortable({ childElements }: MakeSortableProps) {
+export default function MakeSortable<T>({ childElements, childrens, setChildren }: MakeSortableProps<T>) {
 
-    const [children, dragOverItemIndex,
+    const [elements, dragOverItemIndex,
         handleDragStart, handleDrop, handleDragEnd,
-        handleDragEnter] = useDrag({ elementArray: childElements })
+        handleDragEnter] = useDrag({
+            childrenArray: childrens
+            , elementArray: childElements,
+            setChildrenArray: setChildren
+        })
 
     const [isDraggable, handleHandlerMouseDown, handleHandlerMouseUp] =
         useDraggable({ draggable: false });
@@ -26,10 +29,12 @@ export default function MakeSortable({ childElements }: MakeSortableProps) {
     const debounce_call = debounce(handleHandlerMouseUp, 300)
     debounce_call();
 
+
+
     return (
 
         <div className="main-container">
-            {children.map((ChildBlock, id) => (
+            {elements.map((ChildBlock, id) => (
 
                 <div key={id}>
 
@@ -40,16 +45,16 @@ export default function MakeSortable({ childElements }: MakeSortableProps) {
                         onDragEnter={(event) => handleDragEnter(id, event)}
                         onDragEnd={handleDragEnd}
                         onDragOver={(event) => handleDragOver(event)}
-                        className={`childrenBlock`} id={id.toString()}>
-                        <ChildrenWrapper
+                        className={`childrenBlock`} id={id.toString()}
+                    >
+                        <DragHandlerContext.Provider
+                            value={{
+                                handleHandlerMouseDown: handleHandlerMouseDown,
+                                handleHandlerMouseUp: handleHandlerMouseUp
+                            }}>
 
-                            dragHandler={
-                                <DragHandler
-                                    handleHandlerMouseDown={handleHandlerMouseDown}
-                                    handleHandlerMouseUp={handleHandlerMouseUp} />
-
-                            } childBlock={ChildBlock}
-                        />
+                            {ChildBlock}
+                        </DragHandlerContext.Provider>
                     </div>
                     <div className={`bottom-bar ${dragOverItemIndex === id && isBottom && "visible"}`} ></div>
 
