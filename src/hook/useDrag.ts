@@ -1,11 +1,11 @@
 import { useState } from "react";
-import { DragHookPropType, DragHookReturnType } from "../types/DragHookTypes";
+import { DragHookPropType } from "../types/DragHookTypes";
 
 export default function useDrag<T>({
   childrenArray,
   elementArray,
   setChildrenArray,
-}: DragHookPropType<T>): DragHookReturnType {
+}: DragHookPropType<T>) {
   // const [children, setChildren] = useState(childrenArray);
   const [elements, setElementArray] = useState(elementArray);
 
@@ -20,23 +20,18 @@ export default function useDrag<T>({
     setDragItemIndex(id);
   }
 
-  function handleDrop() {
-    const top_bar = document.getElementById("top" + dragOverItemIndex);
-    const bottom_bar = document.getElementById("bottom" + dragOverItemIndex);
-    if (top_bar?.classList.contains("visible")) {
-      top_bar.classList.remove("visible");
-    }
-
-    if (bottom_bar?.classList.contains("visible")) {
-      bottom_bar.classList.remove("visible");
-    }
-
+  function handleDrop(isTop: boolean, isBottom: boolean) {
     const _childArray = [...childrenArray];
+    let spliceIndex = dragOverItemIndex!;
+    if (dragItemIndex! < dragOverItemIndex! && isTop)
+      spliceIndex = spliceIndex - 1;
+    if (dragItemIndex! > dragOverItemIndex! && isBottom)
+      spliceIndex = spliceIndex + 1;
     const child = _childArray.splice(dragItemIndex!, 1)[0];
-    _childArray.splice(dragOverItemIndex!, 0, child);
+    _childArray.splice(spliceIndex, 0, child);
     const _elementArray = [...elements];
     const element = _elementArray.splice(dragItemIndex!, 1)[0];
-    _elementArray.splice(dragOverItemIndex!, 0, element);
+    _elementArray.splice(spliceIndex, 0, element);
 
     setElementArray(_elementArray);
     setChildrenArray(_childArray);
@@ -53,10 +48,11 @@ export default function useDrag<T>({
 
   return [
     elements,
+    dragItemIndex,
     dragOverItemIndex,
     handleDragStart,
     handleDrop,
     handleDragEnd,
     handleDragEnter,
-  ];
+  ] as const;
 }

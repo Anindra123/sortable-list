@@ -13,22 +13,30 @@ interface MakeSortableProps<T> {
 
 export default function MakeSortable<T>({ childElements, childrens, setChildren }: MakeSortableProps<T>) {
 
-    const [elements, dragOverItemIndex,
+    const [elements, dragItemIndex, dragOverItemIndex,
         handleDragStart, handleDrop, handleDragEnd,
         handleDragEnter] = useDrag({
             childrenArray: childrens
-            , elementArray: childElements,
-            setChildrenArray: setChildren
+            , elementArray: childElements
+            , setChildrenArray: setChildren
         })
 
     const [isDraggable, handleHandlerMouseDown, handleHandlerMouseUp] =
         useDraggable({ draggable: false });
 
-    const [isTop, isBottom, handleDragOver] = useDragIndicator({ topValue: false, bottomValue: false })
+    const [isTop, isBottom, handleDragOver] = useDragIndicator({
+        topValue: false
+        , bottomValue: false
+    })
 
     const debounce_call = debounce(handleHandlerMouseUp, 300)
     debounce_call();
 
+    const hasTop = dragOverItemIndex! < dragItemIndex! &&
+        Math.abs(dragOverItemIndex! - dragItemIndex!) === 1;
+
+    const hasBottom = dragOverItemIndex! > dragItemIndex! &&
+        Math.abs(dragOverItemIndex! - dragItemIndex!) === 1;
 
 
     return (
@@ -38,11 +46,14 @@ export default function MakeSortable<T>({ childElements, childrens, setChildren 
 
                 <div key={id}>
 
-                    <div className={`top-bar ${dragOverItemIndex === id && isTop && "visible"}`}></div>
+                    {
+                        isTop && dragOverItemIndex === id && dragItemIndex !== id && !hasBottom
+                        && (<div className={`top-bar visible`}></div>)
+                    }
                     <div draggable={isDraggable}
-                        onDragStart={(event) => handleDragStart(id, event)}
-                        onDrop={(event) => handleDrop(event)}
-                        onDragEnter={(event) => handleDragEnter(id, event)}
+                        onDragStart={() => handleDragStart(id)}
+                        onDrop={() => handleDrop(isTop, isBottom)}
+                        onDragEnter={() => handleDragEnter(id)}
                         onDragEnd={handleDragEnd}
                         onDragOver={(event) => handleDragOver(event)}
                         className={`childrenBlock`} id={id.toString()}
@@ -56,7 +67,11 @@ export default function MakeSortable<T>({ childElements, childrens, setChildren 
                             {ChildBlock}
                         </DragHandlerContext.Provider>
                     </div>
-                    <div className={`bottom-bar ${dragOverItemIndex === id && isBottom && "visible"}`} ></div>
+                    {
+                        isBottom && dragOverItemIndex === id && dragItemIndex !== id && !hasTop
+                        && (<div className={`bottom-bar visible`}
+                        ></div>)
+                    }
 
                 </div>
             ))}

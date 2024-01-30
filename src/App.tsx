@@ -8,7 +8,7 @@ import MakeSortable from './component/MakeSortable'
 
 
 function App() {
-  const [childrens, setChildrens] = useState([1, 2, 3, 4, 5,])
+  const [childrens, setChildrens] = useState([1, 2, 3, 4, 5])
 
 
   const childElements = childrens.map((title) => {
