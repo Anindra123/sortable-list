@@ -1,17 +1,12 @@
 export interface DragHookPropType {
-  elementArray: string[];
+  elementArray: Array<React.JSX.Element>;
 }
 
 export type DragHookReturnType = [
-  boolean,
-  boolean,
-  string[],
-  number | undefined,
+  Array<React.JSX.Element>,
   number | undefined,
   (id: number, event: React.DragEvent<HTMLDivElement>) => void,
   (event: React.DragEvent<HTMLDivElement>) => void,
   (event: React.DragEvent<HTMLDivElement>) => void,
-  (event: React.DragEvent<HTMLDivElement>) => void,
-  (id: number, event: React.DragEvent<HTMLDivElement>) => void,
-  (event: React.DragEvent<HTMLDivElement>) => void
+  (id: number, event: React.DragEvent<HTMLDivElement>) => void
 ];

@@ -13,9 +13,6 @@ export default function useDrag({
     number | undefined
   >(undefined);
 
-  const [isTop, setTop] = useState(false);
-  const [isBottom, setBottom] = useState(false);
-
   function handleDragStart(id: number) {
     setDragItemIndex(id);
   }
@@ -42,43 +39,17 @@ export default function useDrag({
     setDragOverItemIndex(undefined);
   }
 
-  function handleDragOver(event: React.DragEvent<HTMLDivElement>) {
-    event.preventDefault();
-
-    const dragOverItem = event.currentTarget;
-    const dragOverItemRect = dragOverItem.getBoundingClientRect();
-    // const top_bar = document.getElementById("top" + dragOverItem.id);
-    // const bottom_bar = document.getElementById("bottom" + dragOverItem.id);
-
-    if (event.clientY < dragOverItemRect.bottom - dragOverItemRect.height / 2) {
-      setTop(true);
-      setBottom(false);
-    } else {
-      setBottom(true);
-      setTop(false);
-    }
-  }
-
   function handleDragEnter(id: number, event: React.DragEvent<HTMLDivElement>) {
     console.log(event.currentTarget);
     setDragOverItemIndex(id);
   }
 
-  function handleDragLeave(event: React.DragEvent<HTMLDivElement>) {
-    console.log(event.currentTarget.id, dragOverItemIndex);
-  }
-
   return [
-    isTop,
-    isBottom,
     children,
-    dragItemIndex,
     dragOverItemIndex,
     handleDragStart,
     handleDrop,
     handleDragEnd,
-    handleDragOver,
     handleDragEnter,
-    handleDragLeave,
   ];
 }
