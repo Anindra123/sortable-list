@@ -1,4 +1,5 @@
 import { useState } from "react";
+import debounce from "../helper/Debounce";
 
 interface useDraggableHookProp {
   draggable: boolean;
@@ -10,9 +11,12 @@ export default function useDraggable({ draggable }: useDraggableHookProp) {
   function handleHandlerMouseDown() {
     setIsDraggable(true);
   }
-  function handleHandlerMouseUp() {
+  function handleMouseUp() {
     setIsDraggable(false);
   }
+
+  const handleHandlerMouseUp = debounce(handleMouseUp, 300);
+  handleHandlerMouseUp();
 
   return [isDraggable, handleHandlerMouseDown, handleHandlerMouseUp] as const;
 }

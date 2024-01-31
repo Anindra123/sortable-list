@@ -1,5 +1,5 @@
 import { DragHandlerContext } from '../context/DragHandlerContext'
-import debounce from '../helper/Debounce'
+// import debounce from '../helper/Debounce'
 import useDrag from '../hook/useDrag'
 import useDraggable from '../hook/useDraggable'
 import useDragIndicator from '../hook/useDragIndicator'
@@ -29,8 +29,7 @@ export default function MakeSortable<T>({ childElements, childrens, setChildren 
         , bottomValue: false
     })
 
-    const debounce_call = debounce(handleHandlerMouseUp, 300)
-    debounce_call();
+
 
     const hasTop = dragOverItemIndex! < dragItemIndex! &&
         Math.abs(dragOverItemIndex! - dragItemIndex!) === 1;

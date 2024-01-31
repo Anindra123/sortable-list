@@ -53,28 +53,6 @@
   background-color: var(--hover-background);
 }
 
-.childrenBlock.border-top {
-  border-top: 2px solid greenyellow;
-  border-radius: 0;
-}
-
-.childrenBlock.border-bottom {
-  border-bottom: 2px solid greenyellow;
-  border-radius: 0;
-}
-/* .childrenBlock::before {
-  content: normal;
-  display: block;
-  width: 100%;
-  height: 1px;
-  background-color: red;
-} */
-
-/* .childrenBlock.dragOver {
-  border-top: 2px solid greenyellow;
-  border-radius: 0;
-} */
-
 .drag-indicator {
   display: flex;
   align-items: center;
