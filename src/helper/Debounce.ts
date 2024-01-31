@@ -1,16 +1,16 @@
-import React from "react";
+// import React from "react";
 
-export default function debounce(
-  callback: () => void | ((event: React.DragEvent<HTMLDivElement>) => void),
+export default function debounce<T extends (...args: T[]) => void>(
+  callback: T,
   time: number
 ) {
   let timer: number;
 
-  return () => {
+  return function <U>(this: U, ...arg: Parameters<typeof callback>) {
     clearTimeout(timer);
 
     timer = setTimeout(() => {
-      callback();
+      callback.apply(this, arg);
     }, time);
   };
 }

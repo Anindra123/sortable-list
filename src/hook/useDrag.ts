@@ -6,7 +6,6 @@ export default function useDrag<T>({
   elementArray,
   setChildrenArray,
 }: DragHookPropType<T>) {
-  // const [children, setChildren] = useState(childrenArray);
   const [elements, setElementArray] = useState(elementArray);
 
   const [dragItemIndex, setDragItemIndex] = useState<number | undefined>(

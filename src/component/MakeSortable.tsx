@@ -47,7 +47,10 @@ export default function MakeSortable<T>({ childElements, childrens, setChildren 
 
                     {
                         isTop && dragOverItemIndex === id && dragItemIndex !== id && !hasBottom
-                        && (<div className={`top-bar visible`}></div>)
+                        && (<div className={`top-bar visible`}
+                            onDrop={() => handleDrop(isTop, isBottom)}
+                            onDragOver={(event) => { event.preventDefault() }}
+                            id={id.toString()} ></div>)
                     }
                     <div draggable={isDraggable}
                         onDragStart={() => handleDragStart(id)}
@@ -68,7 +71,11 @@ export default function MakeSortable<T>({ childElements, childrens, setChildren 
                     </div>
                     {
                         isBottom && dragOverItemIndex === id && dragItemIndex !== id && !hasTop
-                        && (<div className={`bottom-bar visible`}
+                        &&
+                        (<div className={`bottom-bar visible`}
+                            onDrop={() => handleDrop(isTop, isBottom)}
+                            onDragOver={(event) => { event.preventDefault() }}
+                            id={id.toString()}
                         ></div>)
                     }
 
